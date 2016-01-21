@@ -17,7 +17,7 @@ Y_length = 100e-9;                  % Size of y region in m
 T = 300;                            % Tempurature in Kelvin
 
 Delta_t = 1.5e-15;                  % Time step
-nElectrons = 10;                    % Number of electrons
+nElectrons = 100;                    % Number of electrons
 nSims = 1000;                       % Number of simulations
 v_g = sqrt(2 * C.kb * T / m_n);     % Thermal velocity
 electrons = zeros(nElectrons,4,nSims);
