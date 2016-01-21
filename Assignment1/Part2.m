@@ -18,9 +18,9 @@ T = 300;                            % Tempurature in Kelvin
 taugh_mn = 0.2e-12;                 % Mean time between collisions
 
 Delta_t = 1.5e-15;                  % Time step
-nElectrons = 100;                    % Number of electrons
+nElectrons = 10;                    % Number of electrons
 nSims = 1000;                       % Number of simulations
-v_g = sqrt(2 * C.kb * T / m_n);     % Thermal velocity
+v_g = sqrt(C.kb * T / m_n);         % Thermal velocity
 electrons = zeros(nElectrons,4,nSims);
 Temps = zeros(nElectrons,1);
 Temp_avg = zeros(nSims,2);
@@ -68,22 +68,22 @@ for i = 2:nSims
         
         electrons(n,2,i) = electrons(n,2,i-1) + (electrons(n,4,i)...
             * Delta_t);
-        subplot(2,1,1)
-        plot(squeeze(electrons(n,1,1:i)),squeeze(electrons(n,2,1:i)))
-        axis([0 X_length 0 Y_length]);
-        xlabel('X (m)')
-        ylabel('Y (m)')
-        hold on
+%         subplot(2,1,1)
+%         plot(squeeze(electrons(n,1,1:i)),squeeze(electrons(n,2,1:i)))
+%         axis([0 X_length 0 Y_length]);
+%         xlabel('X (m)')
+%         ylabel('Y (m)')
+%         hold on
         Temps(n) =(electrons(n,3,i)^2 + electrons(n,4,i)^2) *...
             m_n / (2 * C.kb);
     end
     Temp_avg(i,2) = mean(Temps);
     Temp_avg(i,1) = Delta_t * (i-1);
-    hold off
-    subplot(2,1,2)
-    plot(Temp_avg(1:i,1),Temp_avg(1:i,2),'b')
-    axis([0 (Delta_t*nSims) 0 inf])
-    xlabel('Time (s)')
-    ylabel('Temperature (K)')
-    pause(0.01)
+%     hold off
+%     subplot(2,1,2)
+%     plot(Temp_avg(1:i,1),Temp_avg(1:i,2),'b')
+%     axis([0 (Delta_t*nSims) 0 inf])
+%     xlabel('Time (s)')
+%     ylabel('Temperature (K)')
+%     pause(1e-9)
 end

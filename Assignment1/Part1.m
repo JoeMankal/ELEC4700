@@ -21,7 +21,8 @@ nElectrons = 10;                    % Number of electrons
 nSims = 1000;                       % Number of simulations
 v_g = sqrt(2 * C.kb * T / m_n);     % Thermal velocity
 electrons = zeros(nElectrons,4,nSims);
-Temp = zeros(nSims,2);
+Temps = zeros(nElectrons,1);
+Temp_avg = zeros(nSims,2);
 
 for i = 1:nElectrons
     electrons(i,1,1) = X_length * rand;
@@ -29,12 +30,11 @@ for i = 1:nElectrons
     direction = 2*pi*rand;
     electrons(i,3,:) = v_g * cos(direction);
     electrons(i,4,:) = v_g * sin(direction);
-    Temp(1,2) = Temp(1,2) + ((electrons(i,3,1)^2 + electrons(i,4,1)^2)...
-        * m_n / (2 * C.kb));
-    %plot(electrons(i,1,1),electrons(i,2,1),'-')
-    %axis([0 X_length 0 Y_length]);
-    %hold on
+    Temps(i) = ((electrons(i,3,1)^2 + electrons(i,4,1)^2) * m_n /...
+        (2 * C.kb));
 end
+
+Temp_avg(1,2) = mean(Temps);
 
 for i = 2:nSims
     for n = 1:nElectrons
@@ -57,12 +57,14 @@ for i = 2:nSims
         xlabel('X (m)')
         ylabel('Y (m)')
         hold on
-        Temp(i,2) = Temp(i,2) + ((electrons(n,3,i)^2 + electrons(n,4,i)^2) * m_n / (2 * C.kb));
+        Temps(n) =(electrons(n,3,i)^2 + electrons(n,4,i)^2) *...
+            m_n / (2 * C.kb);
     end
-    Temp(i,1) = Temp(i,1) + (Delta_t * (i-1));
+    Temp_avg(i,2) = mean(Temps);
+    Temp_avg(i,1) = Delta_t * (i-1);
     hold off
     subplot(2,1,2)
-    plot(Temp(1:i,1),Temp(1:i,2),'b')
+    plot(Temp_avg(1:i,1),Temp_avg(1:i,2),'b')
     xlabel('Time (s)')
     ylabel('Temperature (K)')
     pause(0.01)
